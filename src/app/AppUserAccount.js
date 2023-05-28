@@ -10,9 +10,10 @@ import {
   Space,
   Button,
   message,
-  Card,
+  Card, Upload,
 } from "antd";
 import default_profile_image from "../assets/user_318-159711.png";
+import {UploadOutlined} from "@ant-design/icons";
 
 const { Text, Link, Title, Paragraph } = Typography;
 const { Header, Sider, Content, Footer } = Layout;
@@ -24,11 +25,19 @@ const onFinishFailed = () => {
   message.error("Submit failed!");
 };
 
+const onChangeProfilePicture = ({file, fileList, event}) => {
+  if(file.status === "done"){
+
+  }
+}
+
+
+
 const AppUserAccount = () => {
   return (
     <>
       <Row justify="start" align="middle" gutter={[48, 16]}>
-        <Col span={1}>
+        <Col span={2}>
           <Image
             src={default_profile_image}
             width={64}
@@ -36,8 +45,13 @@ const AppUserAccount = () => {
             preview={false}
           />
         </Col>
-        <Col span={2}>
+        <Col span={4}>
           <Text>Profile Picture</Text>
+        </Col>
+        <Col>
+          <Upload >
+            <Button icon={<UploadOutlined/>}>Upload Profile Picture</Button>
+          </Upload>
         </Col>
       </Row>
       <Row
