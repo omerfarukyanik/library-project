@@ -1,15 +1,19 @@
-import { App, Layout } from "antd";
+import { App, Layout, theme } from "antd";
 import React from "react";
 import AppSideMenu from "./app/AppSideMenu";
 import "antd/dist/reset.css";
 import "./App.css";
+import AppContent from "./app/AppContent";
 
-const LibraryApp = () => (
-  <Layout>
+const LibraryApp = () => {
+  return (
     <App>
-      <AppSideMenu />
+      <Layout style={{ minHeight: "100vh" }}>
+        <AppSideMenu />
+        <AppContent />
+      </Layout>
     </App>
-  </Layout>
-);
+  );
+};
 
 export default LibraryApp;

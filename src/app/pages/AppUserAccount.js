@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   Col,
@@ -10,10 +10,11 @@ import {
   Space,
   Button,
   message,
-  Card, Upload,
+  Card,
 } from "antd";
-import default_profile_image from "../assets/user_318-159711.png";
-import {UploadOutlined} from "@ant-design/icons";
+import default_profile_image from "../../assets/user_318-159711.png";
+import UploadProfilePictureDialog from "../dialog/UploadProfilePictureDialog";
+import { createUseStyles } from "react-jss";
 
 const { Text, Link, Title, Paragraph } = Typography;
 const { Header, Sider, Content, Footer } = Layout;
@@ -25,35 +26,17 @@ const onFinishFailed = () => {
   message.error("Submit failed!");
 };
 
-const onChangeProfilePicture = ({file, fileList, event}) => {
-  if(file.status === "done"){
-
+const onChangeProfilePicture = ({ file, fileList, event }) => {
+  if (file.status === "done") {
   }
-}
-
-
+};
 
 const AppUserAccount = () => {
+  const [uploadProfileImageModalVisible, setUploadProfileImageModalVisible] =
+    useState(false);
+  const classes = useStyles();
   return (
     <>
-      <Row justify="start" align="middle" gutter={[48, 16]}>
-        <Col span={2}>
-          <Image
-            src={default_profile_image}
-            width={64}
-            height={64}
-            preview={false}
-          />
-        </Col>
-        <Col span={4}>
-          <Text>Profile Picture</Text>
-        </Col>
-        <Col>
-          <Upload >
-            <Button icon={<UploadOutlined/>}>Upload Profile Picture</Button>
-          </Upload>
-        </Col>
-      </Row>
       <Row
         justify="start"
         align="middle"
@@ -70,7 +53,27 @@ const AppUserAccount = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            <Form.Item label="User Informations:"></Form.Item>
+            <Form.Item
+              label={
+                <h2 className={classes.headerLabelItem}>User's Information</h2>
+              }
+              labelCol={{ span: 24, offset: 6 }}
+              colon={false}
+              className={classes.rowContainerFlex}
+            ></Form.Item>
+            <Form.Item label="Profile Picture:">
+              <Row align={"middle"} justify={"start"}>
+                <Space>
+                  <Col>
+                    <Image src={default_profile_image} width={64} height={64} />
+                  </Col>
+                  <Col>
+                    <UploadProfilePictureDialog />
+                  </Col>
+                </Space>
+              </Row>
+            </Form.Item>
+
             <Form.Item label="Username" name="username">
               <Input placeholder="abc123"></Input>
             </Form.Item>
@@ -105,3 +108,17 @@ const AppUserAccount = () => {
 };
 
 export default AppUserAccount;
+
+const useStyles = createUseStyles({
+  headerLabelItem: {
+    flexGrow: "1",
+    borderBottomStyle: "solid",
+    borderBottomColor: "rgb(0, 21, 41)",
+    borderBottomWidth: "2px",
+  },
+  rowContainerFlex: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+});
