@@ -3,13 +3,16 @@ import { StyleProvider } from "@ant-design/cssinjs";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import LibraryApp from "./LibraryApp";
 import reportWebVitals from "./reportWebVitals";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./app/localization/i18n";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
+import { RouterProvider } from "react-router-dom";
+import { router as appRouter } from "./router/AppRouter";
+import { DevSupport } from "@react-buddy/ide-toolbox";
+import { ComponentPreviews, useInitial } from "./dev";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -24,7 +27,12 @@ root.render(
       <StyleProvider hashPriority="high">
         <Provider store={store}>
           <I18nextProvider i18n={i18n}>
-            <LibraryApp />
+            <DevSupport
+              ComponentPreviews={ComponentPreviews}
+              useInitialHook={useInitial}
+            >
+              <RouterProvider router={appRouter} />
+            </DevSupport>
           </I18nextProvider>
         </Provider>
       </StyleProvider>

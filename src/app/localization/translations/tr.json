@@ -1,7 +1,25 @@
 {
   "account": "Hesap",
+  "cancel": "İptal",
   "cart": "Sepet",
+  "change.password": "Şifre Değiş",
+  "email": "E-Posta",
   "english": "İngilizce",
   "log.out": "Çıkış Yap",
-  "turkish": "Türkçe"
+  "material.requests": "Materyal İstekleri",
+  "ok": "Tamam",
+  "password": "Şifre",
+  "password.validate.empty": "Lütfen şifrenizi giriniz!",
+  "profile.picture": "Profil Fotoğrafı:",
+  "submit": "Kaydet",
+  "submit.failed": "Kaydetme Başarısız!",
+  "submit.success": "Kaydetme Başarılı!",
+  "turkish": "Türkçe",
+  "upload": "Yükle",
+  "upload.profile.picture": "Profil Fotoğrafı Yükle",
+  "upload.profile.picture.jpg.png.upload.error": "JPG/PNG dışında dosya yükelyemzsiniz!",
+  "upload.profile.picture.size.error": "Dosya boyutu 2MB'tan küçük olmalı!",
+  "username": "Kullanıcı Adı",
+  "username.validate.empty": "Lütfen kullanıcı adınızı giriniz!",
+  "users.information": "Kullancının Bilgileri"
 }

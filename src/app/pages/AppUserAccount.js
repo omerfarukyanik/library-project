@@ -1,42 +1,44 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Image,
-  Col,
-  Row,
-  Typography,
-  Layout,
-  Form,
-  Input,
-  Space,
   Button,
-  message,
   Card,
+  Col,
+  Divider,
+  Form,
+  Image,
+  Input,
+  Layout,
+  message,
+  Row,
+  Space,
+  Typography,
 } from "antd";
 import default_profile_image from "../../assets/user_318-159711.png";
 import UploadProfilePictureDialog from "../dialog/UploadProfilePictureDialog";
 import { createUseStyles } from "react-jss";
+import i18n from "../localization/i18n";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
+const { t } = i18n;
 const { Text, Link, Title, Paragraph } = Typography;
 const { Header, Sider, Content, Footer } = Layout;
 const onFinish = () => {
-  message.success("Submited successfully!");
+  message.success(t("submit.success"));
 };
 
 const onFinishFailed = () => {
-  message.error("Submit failed!");
+  message.error(t("submit.failed"));
 };
 
-const onChangeProfilePicture = ({ file, fileList, event }) => {
-  if (file.status === "done") {
-  }
-};
-
-const AppUserAccount = () => {
-  const [uploadProfileImageModalVisible, setUploadProfileImageModalVisible] =
-    useState(false);
+const AppUserAccount = ({ preferredLanguage }) => {
   const classes = useStyles();
+
   return (
     <>
+      <Divider orientation={"left"}>
+        <h2>{t("users.information")}</h2>
+      </Divider>
       <Row
         justify="start"
         align="middle"
@@ -53,15 +55,7 @@ const AppUserAccount = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            <Form.Item
-              label={
-                <h2 className={classes.headerLabelItem}>User's Information</h2>
-              }
-              labelCol={{ span: 24, offset: 6 }}
-              colon={false}
-              className={classes.rowContainerFlex}
-            ></Form.Item>
-            <Form.Item label="Profile Picture:">
+            <Form.Item label={t("profile.picture")}>
               <Row align={"middle"} justify={"start"}>
                 <Space>
                   <Col>
@@ -74,13 +68,13 @@ const AppUserAccount = () => {
               </Row>
             </Form.Item>
 
-            <Form.Item label="Username" name="username">
+            <Form.Item label={t("username")} name="username">
               <Input placeholder="abc123"></Input>
             </Form.Item>
-            <Form.Item label="E-mail" name="e-mail">
+            <Form.Item label={t("email")} name="email">
               <Input placeholder="abc@hotmail.com"></Input>
             </Form.Item>
-            <Form.Item label="Change Password" name="password">
+            <Form.Item label={t("change.password")} name="password">
               <Input></Input>
             </Form.Item>
             <Form.Item
@@ -91,23 +85,36 @@ const AppUserAccount = () => {
             >
               <Space>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  {t("submit")}
                 </Button>
               </Space>
             </Form.Item>
           </Form>
         </Col>
       </Row>
+      <Divider orientation={"left"}>
+        <h2>{t("material.requests")} </h2>
+      </Divider>
       <Row>
         <Col>
-          <Card title="Material Requests"></Card>
+          <Card title={t("material.requests")}></Card>
         </Col>
       </Row>
     </>
   );
 };
 
-export default AppUserAccount;
+AppUserAccount.prototype = {
+  preferredLanguage: PropTypes.string,
+};
+
+function mapStateToProps(state) {
+  return {
+    preferredLanguage: state.layout.preferredLanguage,
+  };
+}
+
+export default connect(mapStateToProps)(AppUserAccount);
 
 const useStyles = createUseStyles({
   headerLabelItem: {

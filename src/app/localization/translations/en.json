@@ -1,7 +1,25 @@
 {
   "account": "Account",
+  "cancel": "Cancel",
   "cart": "Cart",
+  "change.password": "Change Password",
+  "email": "E-mail",
   "english": "English",
   "log.out": "Log out",
-  "turkish": "Turkish"
+  "material.requests": "Material Requests",
+  "ok": "OK",
+  "password": "Password",
+  "password.validate.empty": "Please input your password!",
+  "profile.picture": "Profile Picture:",
+  "submit": "Submit",
+  "submit.failed": "Submit failed!",
+  "submit.success": "Submitted successfully!",
+  "turkish": "Turkish",
+  "upload": "Upload",
+  "upload.profile.picture": "Upload Profile Picture",
+  "upload.profile.picture.jpg.png.upload.error": "You can only upload JPG/PNG file!",
+  "upload.profile.picture.size.error": "Image must smaller than 2MB!",
+  "username": "Username",
+  "username.validate.empty": "Please input your username!",
+  "users.information": "User's Information"
 }

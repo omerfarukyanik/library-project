@@ -1,4 +1,4 @@
-import { App, Layout, theme } from "antd";
+import { App, Layout } from "antd";
 import React from "react";
 import AppSideMenu from "./app/AppSideMenu";
 import "antd/dist/reset.css";

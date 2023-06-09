@@ -1,29 +1,24 @@
 import {
-  UserOutlined,
-  ShoppingCartOutlined,
   LogoutOutlined,
+  ShoppingCartOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
-import { Menu, Layout, Image, Typography } from "antd";
-import "./AppSideMenu.css";
+import { Image, Layout, Menu, Typography } from "antd";
 import logo from "../assets/logo256.png";
-import AppUserAccount from "./pages/AppUserAccount";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { setPageContent } from "../redux/store";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const { Header, Sider, Content, Footer } = Layout;
+const { Sider } = Layout;
 const { Text } = Typography;
 
 const AppSideMenu = () => {
   const [current, setCurrent] = useState(null);
 
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const collapsed = useSelector((state) => state.layout.sideMenuCollapsed);
-  const handleChangePageContent = (pageContent) => {
-    dispatch(setPageContent(pageContent));
-  };
+  const navigation = useNavigate();
 
   const menuItems = [
     {
@@ -47,9 +42,10 @@ const AppSideMenu = () => {
     setCurrent(key);
     switch (key) {
       case "account":
-        handleChangePageContent(<AppUserAccount />);
+        navigation("user");
         break;
       case "cart":
+        navigation("cart");
         break;
       default:
         break;
