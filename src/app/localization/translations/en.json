@@ -21,5 +21,8 @@
   "upload.profile.picture.size.error": "Image must smaller than 2MB!",
   "username": "Username",
   "username.validate.empty": "Please input your username!",
-  "users.information": "User's Information"
+  "users.information": "User's Information",
+  "status.404": "Sorry, the page you visited does not exist.",
+  "back.home": "Back Home",
+  "login.success": "Logged in successfully!"
 }

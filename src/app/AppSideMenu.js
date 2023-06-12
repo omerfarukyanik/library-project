@@ -7,8 +7,9 @@ import React, { useState } from "react";
 import { Image, Layout, Menu, Typography } from "antd";
 import logo from "../assets/logo256.png";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { adminLogOut, logOut, userLogOut } from "../redux";
 
 const { Sider } = Layout;
 const { Text } = Typography;
@@ -19,6 +20,13 @@ const AppSideMenu = () => {
   const { t } = useTranslation();
   const collapsed = useSelector((state) => state.layout.sideMenuCollapsed);
   const navigation = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogOut = () => {
+    dispatch(logOut());
+    localStorage.removeItem("login-type");
+    navigation("/");
+  };
 
   const menuItems = [
     {
@@ -33,7 +41,7 @@ const AppSideMenu = () => {
     },
     {
       label: t("log.out"),
-      key: "log-out",
+      key: "logout",
       icon: <LogoutOutlined />,
     },
   ];
@@ -46,6 +54,9 @@ const AppSideMenu = () => {
         break;
       case "cart":
         navigation("cart");
+        break;
+      case "logout":
+        handleLogOut();
         break;
       default:
         break;

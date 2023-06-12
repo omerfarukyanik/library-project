@@ -21,5 +21,8 @@
   "upload.profile.picture.size.error": "Dosya boyutu 2MB'tan küçük olmalı!",
   "username": "Kullanıcı Adı",
   "username.validate.empty": "Lütfen kullanıcı adınızı giriniz!",
-  "users.information": "Kullancının Bilgileri"
+  "users.information": "Kullancının Bilgileri",
+  "status.404": "Üzgünüm, baktığınız sayfa mevcut değil.",
+  "back.home": "Ana Sayfaya Dön",
+  "login.success": "Başarılı bir şekilde giriş yapıldı!"
 }

@@ -16,24 +16,23 @@ import {
 import default_profile_image from "../../assets/user_318-159711.png";
 import UploadProfilePictureDialog from "../dialog/UploadProfilePictureDialog";
 import { createUseStyles } from "react-jss";
-import i18n from "../localization/i18n";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-const { t } = i18n;
 const { Text, Link, Title, Paragraph } = Typography;
 const { Header, Sider, Content, Footer } = Layout;
-const onFinish = () => {
-  message.success(t("submit.success"));
-};
-
-const onFinishFailed = () => {
-  message.error(t("submit.failed"));
-};
 
 const AppUserAccount = ({ preferredLanguage }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
+  const onFinish = () => {
+    message.success(t("submit.success"));
+  };
 
+  const onFinishFailed = () => {
+    message.error(t("submit.failed"));
+  };
   return (
     <>
       <Divider orientation={"left"}>

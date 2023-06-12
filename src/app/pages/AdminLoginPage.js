@@ -23,21 +23,18 @@ import {
   useLoginMutation,
 } from "../../redux/api/credentialsApi";
 import { adminLogin, setCSRFToken, userLogin } from "../../redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import bcryptjs from "bcryptjs";
+import { useNavigate } from "react-router-dom";
 
 const { Text, Title } = Typography;
 const { Footer, Content, Header } = Layout;
 const LoginPage = ({ userLoggedIn, adminLoggedIn, csrfToken }) => {
-  const { message, modal, notification } = App.useApp() || {};
+  const { message, modal, notification } = App.useApp();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = useStyles();
-
-  const [login, loginResult] = useLoginMutation() || {};
-  const sessionResults = useGetSessionQuery() || {};
+  const [login, loginResult] = useLoginMutation();
+  const sessionResults = useGetSessionQuery();
   const navigate = useNavigate();
-  const location = useLocation();
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
     errorInfo.errorFields.forEach((value, index, array) => {
@@ -48,32 +45,25 @@ const LoginPage = ({ userLoggedIn, adminLoggedIn, csrfToken }) => {
   };
   useEffect(() => {
     if (sessionResults.isSuccess) {
-      dispatch(setCSRFToken({ csrfToken: sessionResults.data?.token }));
+      dispatch(setCSRFToken({ csrfToken: sessionResults.data.token }));
     }
-  }, [sessionResults.isSuccess, dispatch, sessionResults.data?.token]);
+  }, [sessionResults.isSuccess]);
   useEffect(() => {
     if (loginResult.isSuccess) {
       message.success(t("login.success"));
 
-      localStorage.setItem("login-type", "user");
-      dispatch(userLogin());
+      localStorage.setItem("login-type", "admin");
+      dispatch(adminLogin());
 
       navigate(`/home`);
     }
   }, [loginResult.isSuccess]);
 
   const handleSubmit = async (e) => {
-    await bcryptjs.genSalt(10, async (err, salt) => {
-      await bcryptjs.hash(e.password, salt, function (err, hash) {
-        e.password = hash;
-      });
-    });
-    console.log(e);
     const formData = new FormData();
     Object.entries(e).forEach(([key, value]) => {
       formData.append(key, value);
     });
-    console.log(formData);
     await login({
       formData,
       headers: {

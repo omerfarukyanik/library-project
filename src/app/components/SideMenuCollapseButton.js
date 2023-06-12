@@ -1,7 +1,7 @@
 import { Button } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import React from "react";
-import { toggleCollapseSideMenu } from "../../redux/store";
+import { toggleCollapseSideMenu } from "../../redux";
 import { connect, useDispatch } from "react-redux";
 import { createUseStyles } from "react-jss";
 import PropTypes from "prop-types";

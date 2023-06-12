@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import AppUserAccount from "../app/pages/AppUserAccount";
 import React from "react";
-import ErrorPage from "../../../../../WebstormProjects/speedometer/src/app/ErrorPage";
+import ErrorPage from "../app/pages/ErrorPage";
 import LibraryApp from "../LibraryApp";
 import LoginPage, { loginLoader } from "../app/pages/LoginPage";
 import { forceLoginPage } from "../app/utils";
@@ -24,5 +24,9 @@ export const router = createBrowserRouter([
         element: forceLoginPage(<AppUserAccount />),
       },
     ],
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);

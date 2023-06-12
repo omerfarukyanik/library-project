@@ -1,9 +1,10 @@
 import { Button, Dropdown } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { setPreferredLanguage } from "../../redux/store";
+import { setPreferredLanguage } from "../../redux";
 import { connect, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+
 const SelectLanguageDropdown = ({ preferredLanguage }, style) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -56,4 +57,5 @@ function mapStateToProps(state) {
     preferredLanguage: state.layout.preferredLanguage,
   };
 }
+
 export default connect(mapStateToProps)(SelectLanguageDropdown);

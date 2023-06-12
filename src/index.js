@@ -1,4 +1,4 @@
-import { ConfigProvider } from "antd";
+import { App, ConfigProvider } from "antd";
 import { StyleProvider } from "@ant-design/cssinjs";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -7,7 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./app/localization/i18n";
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import store from "./redux";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 import { RouterProvider } from "react-router-dom";
 import { router as appRouter } from "./router/AppRouter";
@@ -24,18 +24,20 @@ root.render(
         },
       }}
     >
-      <StyleProvider hashPriority="high">
-        <Provider store={store}>
-          <I18nextProvider i18n={i18n}>
-            <DevSupport
-              ComponentPreviews={ComponentPreviews}
-              useInitialHook={useInitial}
-            >
-              <RouterProvider router={appRouter} />
-            </DevSupport>
-          </I18nextProvider>
-        </Provider>
-      </StyleProvider>
+      <App>
+        <StyleProvider hashPriority="high">
+          <Provider store={store}>
+            <I18nextProvider i18n={i18n}>
+              <DevSupport
+                ComponentPreviews={ComponentPreviews}
+                useInitialHook={useInitial}
+              >
+                <RouterProvider router={appRouter} />
+              </DevSupport>
+            </I18nextProvider>
+          </Provider>
+        </StyleProvider>
+      </App>
     </ConfigProvider>
   </React.StrictMode>
 );
