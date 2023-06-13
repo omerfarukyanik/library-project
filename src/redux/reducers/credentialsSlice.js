@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import i18n from "../../app/localization/i18n";
 
 const credentialsSlice = createSlice({
   name: "credentials",
@@ -7,24 +6,28 @@ const credentialsSlice = createSlice({
     userLoggedIn: false,
     adminLoggedIn: false,
     csrfToken: null,
+    username: "",
   },
   reducers: {
     logOut: (state) => {
       state.adminLoggedIn = false;
       state.userLoggedIn = false;
       state.csrfToken = null;
+      state.username = "";
     },
     userLogOut: (state) => {
       state.userLoggedIn = false;
     },
-    userLogin: (state) => {
+    userLogin: (state, action) => {
       state.userLoggedIn = true;
+      state.username = action.payload.username;
     },
     adminLogOut: (state) => {
       state.adminLoggedIn = false;
     },
-    adminLogin: (state) => {
+    adminLogin: (state, action) => {
       state.adminLoggedIn = true;
+      state.username = action.payload.username;
     },
     setCSRFToken: (state, action) => {
       state.csrfToken = action.payload.csrfToken;

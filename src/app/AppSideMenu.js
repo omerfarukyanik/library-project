@@ -1,6 +1,9 @@
 import {
+  DatabaseOutlined,
   LogoutOutlined,
   ShoppingCartOutlined,
+  TeamOutlined,
+  UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
@@ -9,7 +12,7 @@ import logo from "../assets/logo256.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { adminLogOut, logOut, userLogOut } from "../redux";
+import { logOut } from "../redux";
 
 const { Sider } = Layout;
 const { Text } = Typography;
@@ -27,24 +30,57 @@ const AppSideMenu = () => {
     localStorage.removeItem("login-type");
     navigation("/");
   };
-
-  const menuItems = [
-    {
-      label: t("account"),
-      key: "account",
-      icon: <UserOutlined />,
-    },
-    {
-      label: t("cart"),
-      key: "cart",
-      icon: <ShoppingCartOutlined />,
-    },
-    {
-      label: t("log.out"),
-      key: "logout",
-      icon: <LogoutOutlined />,
-    },
-  ];
+  const handleMenuItems = () => {
+    if (localStorage.getItem("login-type") === "admin") {
+      return [
+        {
+          label: t("account"),
+          key: "admin-account",
+          icon: <UserOutlined />,
+        },
+        {
+          label: t("logs"),
+          key: "logs",
+          icon: <UnorderedListOutlined />,
+        },
+        {
+          label: t("users"),
+          key: "user.details",
+          icon: <TeamOutlined />,
+        },
+        {
+          label: t("material.list"),
+          key: "material.list",
+          icon: <DatabaseOutlined />,
+        },
+        {
+          label: t("log.out"),
+          key: "logout",
+          icon: <LogoutOutlined />,
+        },
+      ];
+    } else if (localStorage.getItem("login-type") === "user") {
+      return [
+        {
+          label: t("account"),
+          key: "account",
+          icon: <UserOutlined />,
+        },
+        {
+          label: t("cart"),
+          key: "cart",
+          icon: <ShoppingCartOutlined />,
+        },
+        {
+          label: t("log.out"),
+          key: "logout",
+          icon: <LogoutOutlined />,
+        },
+      ];
+    }
+    return [];
+  };
+  const menuItems = handleMenuItems();
 
   const onClick = ({ item, key, keyPath, domEvent }) => {
     setCurrent(key);
@@ -54,6 +90,18 @@ const AppSideMenu = () => {
         break;
       case "cart":
         navigation("cart");
+        break;
+      case "admin-account":
+        navigation("admin-account");
+        break;
+      case "logs":
+        navigation("logs");
+        break;
+      case "user.details":
+        navigation("user-details");
+        break;
+      case "material.list":
+        navigation("material-list");
         break;
       case "logout":
         handleLogOut();

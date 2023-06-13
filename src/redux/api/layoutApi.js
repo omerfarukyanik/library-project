@@ -12,9 +12,6 @@ export const layoutApi = createApi({
   }),
   tagTypes: ["Avatar"],
   endpoints: (build) => ({
-    getAuthor: build.query({
-      query: () => "/todos",
-    }),
     uploadProfilePicture: build.mutation({
       query: (args) => ({
         url: "api/upload-profile-picture",
@@ -24,9 +21,6 @@ export const layoutApi = createApi({
         formData: true,
       }),
       invalidatesTags: ["Avatar"],
-    }),
-    userById: build.query({
-      query: (userId) => `/users/${userId}`,
     }),
     updateTodo: build.mutation({
       query: (updatedTodo) => ({
@@ -38,9 +32,4 @@ export const layoutApi = createApi({
   }),
 });
 
-export const {
-  useGetAuthorQuery,
-  useUserByIdQuery,
-  useUpdateTodoMutation,
-  useUploadProfilePictureMutation,
-} = layoutApi;
+export const { useUploadProfilePictureMutation } = layoutApi;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   App,
   Button,
@@ -22,18 +22,21 @@ import {
   useGetSessionQuery,
   useLoginMutation,
 } from "../../redux/api/credentialsApi";
-import { adminLogin, setCSRFToken, userLogin } from "../../redux";
+import { adminLogin, setCSRFToken } from "../../redux";
 import { useNavigate } from "react-router-dom";
+import bcryptjs from "bcryptjs";
 
 const { Text, Title } = Typography;
 const { Footer, Content, Header } = Layout;
 const LoginPage = ({ userLoggedIn, adminLoggedIn, csrfToken }) => {
-  const { message, modal, notification } = App.useApp();
+  const { message } = App.useApp() || {};
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = useStyles();
-  const [login, loginResult] = useLoginMutation();
-  const sessionResults = useGetSessionQuery();
+  const [password, setPassword] = useState();
+  const [username, setUsername] = useState();
+  const [login, loginResult] = useLoginMutation() || {};
+  const sessionResults = useGetSessionQuery() || {};
   const navigate = useNavigate();
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -44,27 +47,60 @@ const LoginPage = ({ userLoggedIn, adminLoggedIn, csrfToken }) => {
     });
   };
   useEffect(() => {
+    setInterval(() => {
+      if (csrfToken == null) {
+        try {
+          sessionResults.refetch();
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }, 60000);
+  });
+  useEffect(() => {
     if (sessionResults.isSuccess) {
-      dispatch(setCSRFToken({ csrfToken: sessionResults.data.token }));
+      dispatch(setCSRFToken({ csrfToken: sessionResults?.data?.token }));
     }
-  }, [sessionResults.isSuccess]);
+  }, [sessionResults.isSuccess, dispatch, sessionResults?.data?.token]);
   useEffect(() => {
     if (loginResult.isSuccess) {
-      message.success(t("login.success"));
-
-      localStorage.setItem("login-type", "admin");
-      dispatch(adminLogin());
-
-      navigate(`/home`);
+      if (bcryptjs.compareSync(password, loginResult?.data?.password)) {
+        localStorage.setItem("login-type", "admin");
+        dispatch(adminLogin({ username: username }));
+        navigate(`/home`);
+        message.success(t("login.success"));
+      } else {
+        message.error(t("password.incorrect"));
+      }
     }
-  }, [loginResult.isSuccess]);
+    if (loginResult.isError) {
+      message.error(t(loginResult.error?.data?.message));
+    }
+  }, [
+    dispatch,
+    loginResult?.data?.password,
+    loginResult.error?.data?.message,
+    loginResult.isError,
+    loginResult.isSuccess,
+    message,
+    navigate,
+    password,
+    t,
+    username,
+  ]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
+    const salt = bcryptjs.genSaltSync(10);
+    setPassword(e.password);
+    setUsername(e.username);
+    e.password = bcryptjs.hashSync(e.password, salt);
     const formData = new FormData();
+
     Object.entries(e).forEach(([key, value]) => {
       formData.append(key, value);
     });
-    await login({
+    formData.append("type", "admin");
+    login({
       formData,
       headers: {
         "X-CSRFToken": csrfToken,
@@ -81,24 +117,18 @@ const LoginPage = ({ userLoggedIn, adminLoggedIn, csrfToken }) => {
           <Row>
             <Col className={classes.logoAndTitleContainer}>
               <Image src={logo} preview={false} />
-              <Title>E-Library</Title>
+              <Title>E-Library Admin</Title>
             </Col>
-            <Col></Col>
           </Row>
 
           <Form
+            className={classes.loginPageFormContainer}
             name="basic"
             labelCol={{
               span: 8,
             }}
             wrapperCol={{
               span: 16,
-            }}
-            style={{
-              minWidth: "40vw",
-              alignItems: "center",
-              minHeight: "90vh",
-              paddingTop: "40vh",
             }}
             onFinish={handleSubmit}
             onFinishFailed={onFinishFailed}
@@ -140,11 +170,30 @@ const LoginPage = ({ userLoggedIn, adminLoggedIn, csrfToken }) => {
                 {t("submit")}
               </Button>
             </Form.Item>
+            <Form.Item
+              wrapperCol={{
+                offset: 16,
+                span: 8,
+              }}
+            >
+              <Typography.Link onClick={() => navigate("/")}>
+                {t("go.to.admin.user.page")}
+              </Typography.Link>
+            </Form.Item>
+            <Form.Item
+              wrapperCol={{
+                offset: 16,
+                span: 8,
+              }}
+            >
+              <Typography.Link onClick={() => navigate("/signup")}>
+                {t("go.to.sign.up.page")}
+              </Typography.Link>
+            </Form.Item>
           </Form>
         </Space>
       </Content>
       <Footer className={classes.footerContainer}>
-        <Layout></Layout>
         <Space>
           <Divider type={"vertical"} />
           <Text>BBM471 Project</Text>
@@ -160,6 +209,13 @@ const LoginPage = ({ userLoggedIn, adminLoggedIn, csrfToken }) => {
 };
 
 const useStyles = createUseStyles({
+  loginPageFormContainer: {
+    minWidth: "40vw",
+    alignItems: "center",
+    minHeight: "83vh",
+    maxHeight: "90vh",
+    paddingTop: "40vh !important",
+  },
   loginPageContainer: {
     display: "flex",
     justifyContent: "center",
@@ -172,9 +228,10 @@ const useStyles = createUseStyles({
     maxWidth: "20vw",
   },
   footerContainer: {
-    display: "flex",
     minHeight: "10vh",
+    display: "flex",
     justifyContent: "center",
+    alignContent: "center",
   },
 });
 export const loginLoader = () => {

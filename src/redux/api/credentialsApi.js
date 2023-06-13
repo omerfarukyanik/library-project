@@ -33,7 +33,17 @@ export const credentialsApi = createApi({
         formData: true,
       }),
     }),
+    signUp: build.mutation({
+      query: ({ formData, headers = {} }) => ({
+        url: "/api/signup",
+        method: "POST",
+        body: formData,
+        headers: { ...headers },
+        formDate: true,
+      }),
+    }),
   }),
 });
 
-export const { useGetSessionQuery, useLoginMutation } = credentialsApi;
+export const { useGetSessionQuery, useLoginMutation, useSignUpMutation } =
+  credentialsApi;
